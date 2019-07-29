@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-center">Products</h2>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <th scope="col">Item ID</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Remove</th>
+                            </thead>
+                            <tbody>
+                                {{#each product}}
+                                <tr>
+                                    <td>{{this.item_id}}</td>
+                                    <th scope="row">{{this.attributes}}</th>
+                                    <td>{{this.name}}</td>
+                                    <td>${{this.price}}</td>
+                                    <td><a href="/deleteProduct/{{this.item_id}}" class="btn btn-danger"><i
+                                                class="fa fa-trash" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <label for="totalLabel">Subtotal: ${{subTotal}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-center">Payment</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="/charge" method="POST">
+                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key="pk_test_d2qLFzYqFBbTF6vD703o56PG00Y5wI7ezP" data-amount="{{subTotalModified}}"
+                                data-name="{{this.name}}" data-description="product buyed with e-commerce."
+                                data-locale="auto">
+                                </script>
+                            <script>
+                                // Hide default stripe button
+                                document.getElementsByClassName('stripe-button-el')[0].style.display = 'none';
+                            </script>
+                            <input type="hidden" name="subTotal" value="{{subTotalModified}}">
+                            <input type="hidden" name="description" value="Tshirt from this site.">
+                            <button id="paymentBtn" type="submit" class="btn btn-success">Purchase</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://js.stripe.com/v3/"></script>
+</body>
+
+</html>

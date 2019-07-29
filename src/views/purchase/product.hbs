@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+
+<body>
+    {{#if product}}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 d-flex align-items-stretch">
+                <form action="/index/cart/purchase" method="POST">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <h3>{{product.name}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <img id="mainImage" src="/images/{{product.image}}">
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p>{{product.description}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <h3>$<label>{{product.price}}</label></h3>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="row">
+                                        <img id="miniImg" src="/images/{{product.image}}" style="width:50px">
+                                        <img id="miniImg2" src="/images/{{product.image_2}}" style="width:50px">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <label id="sizeLabel">Sizes</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <p>In stock :<label id="stock">{{product.display}}</label></p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select name="sizeSend" class="form-control" id="thedropdown"
+                                        onclick="obtainListValue()">
+                                        {{#each sizes}}
+                                        <option value={{this.attribute_value}}>{{this.attribute_value}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-sm-4">
+                                    <label id="outOfStock">
+                                        <font color="red">OUT OF STOCK</font>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="hidden" name="Id" value={{product.product_id}}>
+                                    <input type="hidden" name="productName" value="{{product.name}}">
+                                    <input type="hidden" name="price" value={{product.price}}>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button id="addToCartBtn" type="submit" class="btn btn-success">Add to cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

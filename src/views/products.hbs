@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="row">
+        <div class="pagination">
+            {{#each pageInfo}}
+            <a href="/products/{{this.category_id}}?page={{this.currentPage}}">{{this.currentPage}}</a>
+            {{/each}}
+        </div>
+    </div>
+    <div class="row">
+        {{#if user}}
+        {{#each products}}
+        <div class="col-sm">
+            <div class="card" style="width: 250px;">
+                <img class="card-img-top" src="/images/{{this.thumbnail}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.name}}</h5>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <h4>${{this.price}}</h4>
+                        <a class="btn btn-success" href="/index/cart/{{this.product_id}}" style="margin-left: 40px;">See
+                            product</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+
+        {{else}}
+        {{#each products}}
+        <div class="col-sm">
+            <div class="card" style="width: 250px;">
+                <img class="card-img-top" src="/images/{{thumbnail}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.name}}</h5>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <h4>${{this.price}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+        {{/if}}
+    </div>
+</div>

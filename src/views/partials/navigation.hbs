@@ -1,0 +1,49 @@
+{{#if user}}
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" href="/departments">Departments</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/categories">Categories</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/index/1">All products</a>
+    </li>
+  </ul>
+
+  <form class="form-inline my-2 my-lg-0" action="/search" method="POST">
+    <input class="form-control mr-sm-2" type="checkbox" name="switch">
+    <label>
+      <font color="white">All words</font>
+    </label>
+    <input class="form-control mr-sm-2" name="searchBar" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" name="searchButton" type="submit">Search</button>
+  </form>
+</nav>
+{{else}}
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" href="/departments">Departments</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/categories">Categories</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/select/1">All products</a>
+    </li>
+  </ul>
+
+  <form class="form-inline my-2 my-lg-0" action="/search" method="POST">
+    <input class="form-control mr-sm-2" type="checkbox" name="switch">
+    <label>
+      <font color="white">All words</font>
+    </label>
+    <input class="form-control mr-sm-2" name="searchBar" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" name="searchButton" type="submit">Search</button>
+  </form>
+</nav>
+{{/if}}

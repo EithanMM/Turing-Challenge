@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        {{#each departments}}
+        <div class="col-md-4 d-flex align-items-stretch">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">{{this.name}}</h1>
+                </div>
+                <div class="card-body">
+                    <h4 class="text-center">{{this.description}}</h4>
+                </div>
+                <div class="card-footer">
+                    <div class="btnBox">
+                        <a class="btn btn-primary" href="/categories/{{this.department_id}}">See categories</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>

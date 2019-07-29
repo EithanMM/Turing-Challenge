@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row">
+        {{#if user}}
+        <div class="pagination">
+            {{#each range}}
+            <a href="/index/{{this}}">{{this}}</a>
+            {{/each}}
+        </div>
+
+        <div class="row">
+            {{#each result}}
+            <div class="col-sm d-flex align-items-stretch">
+                <div class="card" style="width: 250px;">
+                    <img class="card-img-top" src="/images/{{thumbnail}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{name}}</h5>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <h4>${{price}}</h4>
+                            <a class="btn btn-success" href="/index/cart/{{product_id}}" style="margin-left: 40px;">See
+                                product</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{else}}
+        <div class="pagination">
+            {{#each range}}
+            <a href="/select/{{this}}">{{this}}</a>
+            {{/each}}
+        </div>
+
+        <div class="row">
+            {{#each result}}
+            <div class="col-sm">
+                <div class="card" style="width: 250px;">
+                    <img class="card-img-top" src="/images/{{thumbnail}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{name}}</h5>
+                        {{!-- <p class="card-text">{{description}}</p> --}}
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <h4>${{price}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+    </div>
+</div>

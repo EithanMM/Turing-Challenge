@@ -1,0 +1,30 @@
+{
+	"name": "e-comerce-challenge",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node src/index.js",
+		"dev": "env-cmd -f ./config/dev.env nodemon src/index.js -e js,hbs",
+		"test": ""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@sendgrid/mail": "^6.4.0",
+		"connect-flash": "^0.1.1",
+		"express": "^4.17.1",
+		"express-handlebars": "^3.1.0",
+		"express-session": "^1.16.2",
+		"pagination": "^0.4.6",
+		"passport": "^0.4.0",
+		"passport-local": "^1.0.0",
+		"request": "^2.88.0",
+		"stripe": "^7.5.0"
+	},
+	"devDependencies": {
+		"env-cmd": "^9.0.3",
+		"nodemon": "^1.19.1"
+	}
+}
