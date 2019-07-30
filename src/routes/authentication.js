@@ -35,11 +35,11 @@ router.post(
 );
 
 router.get('/signin', (req, res) => {
-	res.render('loggin/signin', { success: req.flash('success'), error: req.flash('error') });
+	res.render('login/signin', { success: req.flash('success'), error: req.flash('error') });
 });
 
 router.get('/signup', (req, res) => {
-	res.render('loggin/signup', { success: req.flash('success'), error: req.flash('error') });
+	res.render('login/signup', { success: req.flash('success'), error: req.flash('error') });
 });
 
 router.get('/index/:id', isLoged, async (req, res) => {
