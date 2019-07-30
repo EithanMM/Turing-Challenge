@@ -93,8 +93,4 @@ router.post('/search', async (req, res) => {
 	}
 });
 
-router.get('/test', (req, res) => {
-	res.render('purchase/successpayment');
-});
-
 module.exports = router;

@@ -170,16 +170,4 @@ router.get('/deleteProduct/:item_id', isLoged, async (req, res) => {
 	}
 });
 
-router.get('/test', async (req, res) => {
-	const productsInCart = await getListProductsFromShoppingCart(req.user.shopCartId);
-
-	let subTotal = 0;
-
-	productsInCart.forEach((element) => {
-		subTotal += parseFloat(element.price);
-	});
-
-	res.send('email enviado');
-});
-
 module.exports = router;
