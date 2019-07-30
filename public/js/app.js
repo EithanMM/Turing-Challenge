@@ -1,5 +1,3 @@
-console.log('Client javascript fro this page.');
-
 function updateQuantiy() {
 	var range = document.getElementsByName('quantitySend')[0].value;
 	document.getElementById('quantityLabel').textContent = range;
@@ -18,6 +16,10 @@ function displayButton() {
 		document.getElementById('outOfStock').style.visibility = 'hidden';
 		document.getElementById('addToCartBtn').style.visibility = 'visible';
 	}
+}
+
+function imageChange(entrySrc) {
+	document.getElementById('mainImage').src = entrySrc;
 }
 
 displayButton();

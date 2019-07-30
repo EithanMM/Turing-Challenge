@@ -40,8 +40,10 @@
                                 </div>
                                 <div class="col-sm-7">
                                     <div class="row">
-                                        <img id="miniImg" src="/images/{{product.image}}" style="width:50px">
-                                        <img id="miniImg2" src="/images/{{product.image_2}}" style="width:50px">
+                                        <img id="miniImg" onclick="imageChange('/images/{{product.image}}')"
+                                            src="/images/{{product.image}}" style="width:50px">
+                                        <img id="miniImg2" onclick="imageChange('/images/{{product.image_2}}')"
+                                            src="/images/{{product.image_2}}" style="width:50px">
                                     </div>
                                 </div>
                             </div>
