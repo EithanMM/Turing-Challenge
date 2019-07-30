@@ -60,7 +60,7 @@ router.get('/products/:category_id', async (req, res) => {
 		res.render('products', { pageInfo: objectArray, products: products.rows });
 	} else {
 		res.render('products', {
-			user: user.req.customer,
+			user: req.user.customer,
 			pageInfo: objectArray,
 			products: products.rows
 		});
