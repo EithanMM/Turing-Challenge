@@ -414,8 +414,11 @@ const getAllProductsFromCategoryById = async (categorie_id, page_number) => {
 	const products = await getProductsByCategorie(categorie_id, page_number, result.rowsPerPage);
 
 	/* If the rows count from the result are less than the 'rowsPerPage attribute' */
-	if (products.count < result.rowsPerPage) tam = products.count;
-	else tam = result.rowsPerPage;
+	if (products.rows.length < result.rowsPerPage) {
+		tam = products.rows.length;
+	} else {
+		tam = result.rowsPerPage;
+	}
 
 	result.count = products.count;
 
@@ -445,6 +448,14 @@ const getAllProductsThatMatchSearch = async (product_name, all_words = undefined
 	return result;
 };
 /********************************************************/
+
+// getAllProductsFromCategoryById(1, 3)
+// 	.then((result) => {
+// 		console.log(result);
+// 	})
+// 	.catch((e) => {
+// 		console.log(e);
+// 	});
 
 // const test = async () => {
 // 	let foo;

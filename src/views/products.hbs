@@ -9,8 +9,9 @@
 </head>
 
 <body>
-    <div id="loadingDiv" class="loading"><img style="margin-top: 100px; margin-left: 500px;" width="200" height="200"
+    <div id="loadingDiv" class="loading"><img style="margin-top: 130px; margin-left: 600px;"
             src="/images/Reload-circle.gif"></div>
+    <script>document.getElementById('loadingDiv').style.display = 'none';</script>
 
     <div id="container" class="container">
         <div class="row">
@@ -20,35 +21,36 @@
                     href="/productsFromCategory/{{this.category}}?page={{this.value}}">{{this.value}}</a>
                 {{/each}}
             </div>
-            <div class="row">
-                {{#each result}}
-                <div class="col-sm d-flex align-items-stretch">
-                    <div class="card" style="width: 250px;">
-                        <img class="card-img-top" src="/images/{{thumbnail}}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">{{name}}</h5>
-                        </div>
-                        <div class="card-footer">
-                            <div class="row">
-                                <h4>${{price}}</h4>
-                                <label id="displayLabel-{{@index}}" style="	margin-left: 30px; margin-top: 5px;">
-                                    <font color="red">OUT OF STOCK</font>
-                                </label>
-                                <a class="btn btn-success" id="btnSeeProduct-{{@index}}"
-                                    href="/index/cart/{{product_id}}" style="margin-left: 40px;">See
-                                    product</a>
-                            </div>
+        </div>
+        <div class="row">
+            {{#each result}}
+            <div class="col-sm d-flex align-items-stretch">
+                <div class="card" style="width: 250px;">
+                    <img class="card-img-top" src="/images/{{thumbnail}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{name}}</h5>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <h4>${{price}}</h4>
+                            <label id="displayLabel-{{@index}}" style="	margin-left: 30px; margin-top: 5px;">
+                                <font color="red">OUT OF STOCK</font>
+                            </label>
+                            <a class="btn btn-success" id="btnSeeProduct-{{@index}}" href="/index/cart/{{product_id}}"
+                                style="margin-left: 40px;">See
+                                product</a>
                         </div>
                     </div>
                 </div>
-                {{/each}}
             </div>
-        </div>
-        <select id="selector">
-            {{#each quantities}}
-            <option hidden="true" value={{this}}>{{this}}</option>
             {{/each}}
-        </select>
+        </div>
+    </div>
+    <select id="selector">
+        {{#each quantities}}
+        <option hidden="true" value={{this}}>{{this}}</option>
+        {{/each}}
+    </select>
     </div>
     <script src="/js/index.js"></script>
 </body>

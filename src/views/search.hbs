@@ -1,52 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-</head>
+<head></head>
 
 <body>
-    <div id="loadingDiv" class="loading"><img style="margin-top: 100px; margin-left: 500px;" width="200" height="200"
+    <div id="loadingDiv" class="loading"><img style="margin-top: 130px; margin-left: 600px;"
             src="/images/Reload-circle.gif"></div>
+    <script>document.getElementById('loadingDiv').style.display = 'none';</script>
 
     <div id="container" class="container">
-        {{#if user}} {{!-- if the user is logged--}}
-        {{#if errorMessage}} {{!-- the search failed--}}
+        {{#if user}}{{!-- user logged --}}
+        {{#if errorMessage}} {{!-- found an error in the search --}}
         <section class="py-5">
             <h1 class="display-3">Error</h1>
             <p>{{errorMessage}}</p>
         </section>
-        {{else}} {{!-- the search found something --}}
-        <div class="row">
-            {{#each item}}
-            <div class="col-sm d-flex align-items-stretch">
-                <div class="card" style="width: 250px;">
-                    <img class="card-img-top" src="/images/{{this.thumbnail}}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{this.name}}</h5>
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <h4>${{this.price}}</h4>
-                            <a class="btn btn-success" href="/index/cart/{{this.product_id}}"
-                                style="margin-left: 40px;">See
-                                product</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{/each}}
-        </div>
-        {{/if}}
-        {{else}} {{!-- if the user is not logged--}}
-        {{#if errorMessage}}
-        <section class="py-5">
-            <h1 class="display-3">Error</h1>
-            <p>{{errorMessage}}</p>
-        </section>
-        {{else}}
+        {{else}} {{!-- dont found an error in the search --}}
         <div class="row">
             <div class="pagination">
                 {{#each range}}
@@ -54,6 +23,7 @@
                 {{/each}}
             </div>
         </div>
+
         <div class="row">
             {{#each item}}
             <div class="col-sm d-flex align-items-stretch">
@@ -83,9 +53,54 @@
                 {{/each}}
             </select>
         </div>
-        {{/if}}
+        {{/if}}{{!-- End of if of errorMessage --}}
+        {{else}} {{!-- user is not logged --}}
+        {{#if errorMessage}} {{!-- found an error in the search --}}
+        <section class="py-5">
+            <h1 class="display-3">Error</h1>
+            <p>{{errorMessage}}</p>
+        </section>
+        {{else}} {{!-- dont found an error in the search --}}
+        <div class="row">
+            <div class="pagination">
+                {{#each range}}
+                <a onclick="showLoading()" href="/search/{{this.value}}">{{this.value}}</a>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="row">
+            {{#each item}}
+            <div class="col-sm d-flex align-items-stretch">
+                <div class="card" style="width: 250px;">
+                    <img class="card-img-top" src="/images/{{this.thumbnail}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.name}}</h5>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <h4>${{price}}</h4>
+                            <label id="displayLabel-{{@index}}"
+                                style="	margin-left: 30px; margin-top: 5px; font-size: 15px;">
+                                <font color="red">OUT OF STOCK</font>
+                            </label>
+                            <a class="btn btn-success" id="btnSeeProduct-{{@index}}"
+                                href="/index/cart/{{this.product_id}}" style="margin-left: 40px;">See
+                                product</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            <select id="selector">
+                {{#each quantities}}
+                <option hidden="true" value={{this}}>{{this}}</option>
+                {{/each}}
+            </select>
+        </div>
+        {{/if}}{{!-- End of if of errorMessage --}}
+        {{/if}} {{!-- End of if of user --}}
     </div>
-    {{/if}}
     <script src="/js/index.js"></script>
 </body>
 
