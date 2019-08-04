@@ -76,8 +76,8 @@ router.post(
 router.get('/signout', isLoged, async (req, res) => {
 	var publicObject = req.app.get('publicObject');
 	const status = await wipeOutCart(req.user.shopCartId);
-
 	if (status.message === 'success') {
+		req.user.subtotal = '0.00';
 		req.logOut();
 		publicObject.status = 'active';
 		publicObject.subTotal = '0.00';
