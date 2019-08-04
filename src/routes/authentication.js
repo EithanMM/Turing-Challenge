@@ -172,9 +172,6 @@ router.post('/charge', isLoged, async (req, res) => {
 		cartLenght += element.quantity;
 	});
 
-	// subTotal = Math.floor(subTotal * 100) / 100;
-	//parseInt(req.user.subtotal)
-
 	await stripe.customers
 		.create({
 			email: req.body.stripeEmail,
@@ -188,17 +185,19 @@ router.post('/charge', isLoged, async (req, res) => {
 				customer: customer.id
 			})
 		)
-		.then((charge) => {
+		.then(async (charge) => {
 			generateEmail(req.body.stripeEmail, productsInCart, req.user.subtotal);
+
+			await wipeOutCart(req.user.shopCartId);
+			publicObject.subtotal = '0.00';
+			req.user.subtotal = '0.00';
+
 			res.render('purchase/successpayment', {
 				user: req.user.customer,
 				money: req.user.subtotal,
-				itemsAdded: cartLenght
+				itemsAdded: 0
 			});
 		});
-
-	await wipeOutCart(req.user.shopCartId);
-	publicObject.subtotal = '0.00';
 });
 
 router.get('/shopCart', async (req, res) => {
