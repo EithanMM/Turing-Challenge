@@ -47,6 +47,9 @@ app.use(routesPath);
 app.use(actionsPath);
 app.use(authpath);
 
+/* We create a public object to anyone who wants to acces to the store. */
+app.set('publicObject', { status: 'none', shopCartId: '', subtotal: '0.00', searchWord: '' });
+
 app.use((req, res, next) => {
 	app.locals.success = req.flash('success');
 	app.locals.error = req.flash('error');

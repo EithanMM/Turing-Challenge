@@ -9,10 +9,13 @@
 
 <body>
     {{#if product}}
-    <div class="container">
+    <div id="loadingDiv" class="loading"><img style="margin-top: 100px; margin-left: 500px;" width="200" height="200"
+            src="/images/Reload-circle.gif"></div>
+
+    <div id="container" class="container">
         <div class="row">
             <div class="col-md-6 d-flex align-items-stretch">
-                <form action="/index/cart/purchase" method="POST">
+                <form action="/index/cart/add" method="POST">
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
@@ -37,6 +40,7 @@
                             <div class="row">
                                 <div class="col-sm-5">
                                     <h3>$<label>{{product.price}}</label></h3>
+                                    <h5>Discount :<label>${{discount}}</label></h5>
                                 </div>
                                 <div class="col-sm-7">
                                     <div class="row">
@@ -49,12 +53,14 @@
                             </div>
                             <br>
                             <div class="row">
-                                <label id="sizeLabel">Sizes</label>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-5">
                                     <p>In stock :<label id="stock">{{product.display}}</label></p>
                                 </div>
+                                <div class="col-sm-3"><label id="sizeLabel">Sizes</label></div>
+                                <div class="col-sm-2"><label id="sizeLabel">Quantity</label></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4"></div>
                                 <div class="col-sm-4">
                                     <select name="sizeSend" class="form-control" id="thedropdown"
                                         onclick="obtainListValue()">
@@ -63,6 +69,15 @@
                                         {{/each}}
                                     </select>
                                 </div>
+                                <div class="col-sm-1">
+                                    <input class="form-control" type="text" name="Quantity" value="1" readonly
+                                        id="quantity">
+                                </div>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="col-sm-1"><a class="btn btn-success" onclick="doClick('up')"
+                                        class="btn btn-success"><i class="fas fa-arrow-alt-circle-up"></i></a></div>
+                                <div class="col-sm-1"><a class="btn btn-success" onclick="doClick('down')"
+                                        class="btn btn-success"><i class="fas fa-arrow-alt-circle-down"></i></a></div>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -81,7 +96,10 @@
                                     <input type="hidden" name="price" value={{product.price}}>
                                 </div>
                                 <div class="col-sm-4">
-                                    <button id="addToCartBtn" type="submit" class="btn btn-success">Add to cart</button>
+                                    <button id="addToCartBtn" type="submit" onclick="doSomething()"
+                                        class="btn btn-success">Add to
+                                        cart</button>
+                                    {{!-- type="submit" --}}
                                 </div>
                             </div>
                         </div>

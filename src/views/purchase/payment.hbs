@@ -8,7 +8,11 @@
 </head>
 
 <body>
-    <div class="container">
+    {{#if user}}
+    <div id="loadingDiv" class="loading"><img style="margin-top: 100px; margin-left: 500px;" width="200" height="200"
+            src="/images/Reload-circle.gif"></div>
+
+    <div id="container" class="container">
         <div class="row">
             <div class="col-lg-7">
                 <div class="card">
@@ -20,6 +24,7 @@
                             <thead class="thead-dark">
                                 <th scope="col">Item ID</th>
                                 <th scope="col">Size</th>
+                                <th scope="col">Quantity</th>
                                 <th scope="col">Product</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Remove</th>
@@ -29,6 +34,7 @@
                                 <tr>
                                     <td>{{this.item_id}}</td>
                                     <th scope="row">{{this.attributes}}</th>
+                                    <th scope="row">{{this.quantity}}</th>
                                     <td>{{this.name}}</td>
                                     <td>${{this.price}}</td>
                                     <td><a href="/deleteProduct/{{this.item_id}}" class="btn btn-danger"><i
@@ -75,6 +81,71 @@
     </div>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="/js/purchase.js"></script>
+    {{else}}
+    <div id="loadingDiv" class="loading"><img style="margin-top: 100px; margin-left: 500px;" width="200" height="200"
+            src="/images/Reload-circle.gif"></div>
+
+    <div id="container" class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-center">Products</h2>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <th scope="col">Item ID</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Remove</th>
+                            </thead>
+                            <tbody>
+                                {{#each product}}
+                                <tr>
+                                    <td>{{this.item_id}}</td>
+                                    <th scope="row">{{this.attributes}}</th>
+                                    <th scope="row">{{this.quantity}}</th>
+                                    <td>{{this.name}}</td>
+                                    <td>${{this.price}}</td>
+                                    <td><a href="/deleteProduct/{{this.item_id}}" class="btn btn-danger"><i
+                                                class="fa fa-trash" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <label>Subtotal: $<label id="totalLabel" for="totalLabel">{{subTotal}}</label></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h2 class="text-center">Payment</h2>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Wanna buy it?</h5>
+                        <a href="/signin" class="btn btn-success">Login</a>
+                        <br>
+                        <a href="/signup">Create a new account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/js/purchase.js"></script>
+    {{/if}}
+
 </body>
 
 </html>

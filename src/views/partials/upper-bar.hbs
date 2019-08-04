@@ -1,42 +1,56 @@
-<nav class="navbar navbar-expand-sm   navbar-light bg-light">
-    <img src="/images/tshirtshop.png" width="150p" height="40">
-
-    {{#if user}}
-    <div class="col-sm-7">
-        <label id="userLabel">{{user.email}}</label>
+{{#if user}}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="navbar-header">
+        <img src="/images/tshirtshop.png" width="150p" height="40">
     </div>
 
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/shopCart"><img id="cartImg" src="/icons/icons-bag.png"></a>
-            </li>
-            <li class="nav-item">
-                <div class="btn-group dropleft">
-                    <input type="image" id="menuBtn" src="/icons/cons-burger-black.png" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    <div class="dropdown-menu" aria-labelledby="menuBtn">
-                        <a class="dropdown-item" href="/signout">Logout <i class="fas fa-sign-out-alt fa-2"></i></a>
-                    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto"></ul>
+        <form class="form-inline my-2 my-lg-0">
+            <label class="form-group"><i style="color:chartreuse;" class="fas fa-user"></i></label></label>
+            <h5><label class="form-group" style="margin-top: 5px;">${{money}}</label></h5>
+            <a onclick="showLoading()" class="nav-link" href="/shopCart"><img id="cartImg"
+                    src="/images/shopping-cart.png"><span class="badge badge-light">{{itemsAdded}}</span></a>
+            <li class="nav-item dropleft">
+                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"><img src="/icons/cons-burger-black.png"></a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/signout">Logout<i class="fas fa-sign-out-alt fa-2"></i></a>
                 </div>
             </li>
-        </ul>
+        </form>
     </div>
-    {{else}}
-    <div class="col-sm-7">
-        <label id="userLabel">User name</label>
-    </div>
-    <div class="shoping">
-        <div class="row">
-            <div class="btn-group dropleft">
-                <input type="image" id="menuBtn" src="/icons/cons-burger-black.png" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                <div class="dropdown-menu" aria-labelledby="menuBtn">
-                    <a class="dropdown-item" href="/signin">Signin <i class="fas fa-sign-in-alt fa-2"></i></a>
-                    <a class="dropdown-item" href="/signup">Signup <i class="fas fa-user-plus fa-2"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{/if}}
 </nav>
+{{else}}
+{{#if presentationState}} {{!-- This means that the user is in the presentation view.--}}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="navbar-header">
+        <img src="/images/tshirtshop.png" width="150p" height="40">
+    </div>
+</nav>
+{{else}}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="navbar-header">
+        <img src="/images/tshirtshop.png" width="150p" height="40">
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto"></ul>
+        <form class="form-inline my-2 my-lg-0">
+            <label class="form-group"><i style="color: red;" class="fas fa-user"></i></label>
+            <h5><label class="form-group" style="margin-top: 5px;">${{money}}</label></h5>
+            <a onclick="showLoading()" class="nav-link" href="/shopCart"><img id="cartImg"
+                    src="/images/shopping-cart.png"><span class="badge badge-light">{{itemsAdded}}</span></a>
+            <li class="nav-item dropleft">
+                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"><img src="/icons/cons-burger-black.png"></a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/signin">Login <i class="fas fa-sign-in-alt fa-2"></i></a>
+                    <a class="dropdown-item" href="/signup">Register <i class="fas fa-user-plus fa-2"></i></a>
+                </div>
+            </li>
+        </form>
+    </div>
+</nav>
+{{/if}}
+{{/if}}

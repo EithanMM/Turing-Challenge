@@ -3,47 +3,74 @@
 
   <ul class="navbar-nav mr-auto">
     <li class="nav-item">
-      <a class="nav-link" href="/departments">Departments</a>
+      <a onclick="showLoading()" class="nav-link" href="/departments">Departments</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/categories">Categories</a>
+      <a onclick="showLoading()" class="nav-link" href="/categories">Categories</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/index/1">All products</a>
+      <a onclick="showLoading()" class="nav-link" href="/select/1">All products</a>
     </li>
   </ul>
 
-  <form class="form-inline my-2 my-lg-0" action="/search" method="POST">
-    <input class="form-control mr-sm-2" type="checkbox" name="switch">
+  <form class="form-inline my-2 my-lg-0" action="/search/1" method="POST">
     <label>
       <font color="white">All words</font>
     </label>
+    <label class="switch">
+      <input class="form-control mr-sm-3" type="checkbox" name="switch" checked>
+      <span class="slider round"></span>
+    </label>
+
     <input class="form-control mr-sm-2" name="searchBar" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" name="searchButton" type="submit">Search</button>
+    <button onclick="showLoading()" class="btn btn-outline-success my-2 my-sm-0" name="searchButton"
+      type="submit">Search</button>
   </form>
+</nav>
+{{else}}
+{{#if presentationState}}
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link disabled" href="/departments">Departments</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="/categories">Categories</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="/select/1">All products</a>
+    </li>
+  </ul>
 </nav>
 {{else}}
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 
   <ul class="navbar-nav mr-auto">
     <li class="nav-item">
-      <a class="nav-link" href="/departments">Departments</a>
+      <a onclick="showLoading()" class="nav-link" href="/departments">Departments</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/categories">Categories</a>
+      <a onclick="showLoading()" class="nav-link" href="/categories">Categories</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/select/1">All products</a>
+      <a onclick="showLoading()" class="nav-link" href="/select/1">All products</a>
     </li>
   </ul>
 
-  <form class="form-inline my-2 my-lg-0" action="/search" method="POST">
-    <input class="form-control mr-sm-2" type="checkbox" name="switch">
+  <form class="form-inline my-2 my-lg-0" action="/search/1" method="POST">
     <label>
       <font color="white">All words</font>
     </label>
+    <label class="switch">
+      <input class="form-control mr-sm-3" type="checkbox" name="switch" checked>
+      <span class="slider round"></span>
+    </label>
+
     <input class="form-control mr-sm-2" name="searchBar" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" name="searchButton" type="submit">Search</button>
+    <button onclick="showLoading()" class="btn btn-outline-success my-2 my-sm-0" name="searchButton"
+      type="submit">Search</button>
   </form>
 </nav>
+{{/if}}
 {{/if}}

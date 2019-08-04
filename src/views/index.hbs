@@ -1,56 +1,55 @@
-<div class="container">
-    <div class="row">
-        {{#if user}}
-        <div class="pagination">
-            {{#each range}}
-            <a href="/index/{{this}}">{{this}}</a>
-            {{/each}}
-        </div>
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>E-commerce</title>
+</head>
+
+<body>
+    <div id="loadingDiv" class="loading"><img style="margin-top: 100px; margin-left: 500px;" width="200" height="200"
+            src="/images/Reload-circle.gif"></div>
+    <div id="container" class="container">
         <div class="row">
-            {{#each result}}
-            <div class="col-sm d-flex align-items-stretch">
-                <div class="card" style="width: 250px;">
-                    <img class="card-img-top" src="/images/{{thumbnail}}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{name}}</h5>
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <h4>${{price}}</h4>
-                            <a class="btn btn-success" href="/index/cart/{{product_id}}" style="margin-left: 40px;">See
-                                product</a>
+            <div class="pagination">
+                {{#each range}}
+                <a onclick="showLoading()" href="/select/{{this}}">{{this}}</a>
+                {{/each}}
+            </div>
+            <div class="row">
+                {{#each result}}
+                <div class="col-sm d-flex align-items-stretch">
+                    <div class="card" style="width: 250px;">
+                        <img class="card-img-top" src="/images/{{thumbnail}}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{name}}</h5>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <h4>${{price}}</h4>
+                                <label id="displayLabel-{{@index}}"
+                                    style="	margin-left: 30px; margin-top: 5px; font-size: 15px;">
+                                    <font color="red">OUT OF STOCK</font>
+                                </label>
+                                <a class="btn btn-success" id="btnSeeProduct-{{@index}}"
+                                    href="/index/cart/{{product_id}}" style="margin-left: 40px;">See
+                                    product</a>
+                            </div>
                         </div>
                     </div>
                 </div>
+                {{/each}}
             </div>
-            {{/each}}
         </div>
-        {{else}}
-        <div class="pagination">
-            {{#each range}}
-            <a href="/select/{{this}}">{{this}}</a>
+        <select id="selector">
+            {{#each quantities}}
+            <option hidden="true" value={{this}}>{{this}}</option>
             {{/each}}
-        </div>
-
-        <div class="row">
-            {{#each result}}
-            <div class="col-sm">
-                <div class="card" style="width: 250px;">
-                    <img class="card-img-top" src="/images/{{thumbnail}}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{name}}</h5>
-                        {{!-- <p class="card-text">{{description}}</p> --}}
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <h4>${{price}}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{/each}}
-        </div>
-        {{/if}}
+        </select>
     </div>
-</div>
+    <script src="/js/index.js"></script>
+</body>
+
+</html>

@@ -98,17 +98,26 @@ const getAllProdcuts = (page = undefined, limit = undefined) => {
 	});
 };
 
-const searchProduct = (product_name, all_words = undefined) => {
+const searchProduct = (product_name, all_words = undefined, page) => {
 	return new Promise((resolve, reject) => {
 		if (product_name === undefined) {
 			return reject({ error: { status: 400, message: 'Must provide a product to search' } });
 		} else {
 			var url = '';
-			var url = '';
 			if (all_words === 'on') {
-				url = 'https://backendapi.turing.com/products/search?query_string=' + product_name + '&all_words=on';
+				url =
+					'https://backendapi.turing.com/products/search?query_string=' +
+					product_name +
+					'&all_words=on' +
+					'&page=' +
+					page;
 			} else {
-				url = 'https://backendapi.turing.com/products/search?query_string=' + product_name + '&all_words=off';
+				url =
+					'https://backendapi.turing.com/products/search?query_string=' +
+					product_name +
+					'&all_words=off' +
+					'&page=' +
+					page;
 			}
 		}
 
@@ -140,10 +149,20 @@ const getProductsByCategorie = (category_id, page = undefined, limit = undefined
 			if (isNaN(page)) return reject({ error: { status: 400, message: 'The page must be a number' } });
 			if (isNaN(limit)) return reject({ error: { status: 400, message: 'The limit must be a number' } });
 
-			url = 'https://backendapi.turing.com/products?page=' + parseInt(page) + '&limit=' + parseInt(limit);
+			url =
+				'https://backendapi.turing.com/products/inCategory/' +
+				parseInt(category_id) +
+				'?page=' +
+				parseInt(page) +
+				'&limit=' +
+				parseInt(limit);
 		} else if (page !== undefined) {
 			if (isNaN(page)) return reject({ error: { status: 400, message: 'The page must be a number' } });
-			url = 'https://backendapi.turing.com/products?page=' + parseInt(page);
+			url =
+				'https://backendapi.turing.com/products/inCategory/' +
+				parseInt(category_id) +
+				'?page=' +
+				parseInt(page);
 		}
 
 		request({ url, json: true }, (error, { body }) => {
@@ -313,6 +332,18 @@ const getListProductsFromShoppingCart = (cart_id) => {
 	});
 };
 
+/* this one returns teh sub total of everything in the cart */
+const getProductsFromShoppingCart = (cart_id) => {
+	return new Promise((resolve, reject) => {
+		const url = 'https://backendapi.turing.com/shoppingcart/' + cart_id;
+		request({ url, json: true }, (error, { body }) => {
+			if (error) reject(error);
+
+			resolve(body);
+		});
+	});
+};
+
 const removeSingleProductFromCart = (item_id) => {
 	return new Promise((resolve, reject) => {
 		const url = 'https://backendapi.turing.com/shoppingcart/removeProduct/' + parseInt(item_id);
@@ -336,7 +367,7 @@ const wipeOutCart = (cart_id) => {
 		request.delete({ url }, (error, response, body) => {
 			if (error) reject(error);
 
-			if (response.statusCode === 200) {
+			if (response.statusCode === 200 || response.statusCode === 201) {
 				resolve({ message: 'success' });
 			}
 
@@ -350,22 +381,112 @@ const wipeOutCart = (cart_id) => {
 /********************************************************/
 /******************* HELPERS  **************************/
 //Helper
-const pageIndexCreation = (last_value, category_id) => {
+const pageIndexCreation = (last_value, category_id = undefined) => {
 	let result = [];
-	for (var i = 1; i <= last_value; i++) {
-		result.push(i);
+	if (category_id !== undefined) {
+		for (var i = 1; i <= last_value; i++) {
+			result.push({ category: category_id, value: i });
+		}
+	} else {
+		for (var i = 1; i <= last_value; i++) {
+			result.push(i);
+		}
+	}
+	return result;
+};
+
+const getAllProdcutsById = async (page_number) => {
+	var result = { count: 0, rowsPerPage: 8, rows: [], quantities: [] };
+	const products = await getAllProdcuts(page_number, result.rowsPerPage);
+	result.count = products.count;
+	//console.log(products.rows[0].product_id);
+	for (let i = 0; i < result.rowsPerPage; i++) {
+		var item = await getProductById(products.rows[i].product_id);
+		result.rows.push(item);
+		result.quantities.push(item.display);
+	}
+	return result;
+};
+
+const getAllProductsFromCategoryById = async (categorie_id, page_number) => {
+	var result = { count: 0, rowsPerPage: 8, rows: [], quantities: [] };
+	let tam = 0;
+	const products = await getProductsByCategorie(categorie_id, page_number, result.rowsPerPage);
+
+	/* If the rows count from the result are less than the 'rowsPerPage attribute' */
+	if (products.count < result.rowsPerPage) tam = products.count;
+	else tam = result.rowsPerPage;
+
+	result.count = products.count;
+
+	for (let i = 0; i < tam; i++) {
+		var item = await getProductById(products.rows[i].product_id);
+		result.rows.push(item);
+		result.quantities.push(item.display);
+	}
+	return result;
+};
+
+const getAllProductsThatMatchSearch = async (product_name, all_words = undefined, page) => {
+	var result = { count: 0, rowsPerPage: 8, rows: [], quantities: [] };
+	let tam = 0;
+	const products = await searchProduct(product_name, all_words, page);
+
+	if (products.count < result.rowsPerPage) tam = products.count;
+	else tam = result.rowsPerPage;
+
+	result.count = products.count;
+
+	for (let i = 0; i < tam; i++) {
+		var item = await getProductById(products.rows[i].product_id);
+		result.rows.push(item);
+		result.quantities.push(item.display);
 	}
 	return result;
 };
 /********************************************************/
+
+// const test = async () => {
+// 	let foo;
+// 	let product;
+// 	//1xh7q2ze08jyuq4zf7
+// 	for (var i = 0; i < 2; i++) {
+// 		product = await addProductToShoppingCart('1xh7q2ze08jyuq4zf7', '2', 'S');
+// 	}
+// 	//await saveProductForLater(product[0].item_id);
+// 	foo = await getProductsFromShoppingCart('1xh7q2ze08jyuq4zf7');
+// 	console.log(foo);
+// 	await wipeOutCart('1xh7q2ze08jyuq4zf7');
+// };
+
+// test();
+
+// getAllProductsThatMatchSearch('animal', 'on', 1)
+// 	.then((result) => {
+// 		console.log(result);
+// 	})
+// 	.catch((e) => {
+// 		console.log(e);
+// 	});
+
+// wipeOutCart('1xh7q2ze08jyw0vwbh')
+// 	.then((result) => {
+// 		console.log(result);
+// 	})
+// 	.catch((e) => {
+// 		console.log(e);
+// 	});
+
 module.exports = {
 	getAllDepartments,
 	getDepartmentById,
 	getCategoriesByDepartment,
 	getAllCategories,
 	getCategorieById,
+	getAllProductsFromCategoryById,
 	getCategorieByProdcut,
 	getAllProdcuts,
+	getAllProdcutsById,
 	getProductById,
 	getProductsByCategorie,
 	getProductSizes,
@@ -375,8 +496,10 @@ module.exports = {
 	loginUser,
 	obtainUser,
 	generateShoppingCartId,
+	getAllProductsThatMatchSearch,
 	addProductToShoppingCart,
 	getListProductsFromShoppingCart,
+	getProductsFromShoppingCart,
 	saveProductForLater,
 	removeSingleProductFromCart,
 	wipeOutCart,

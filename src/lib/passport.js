@@ -16,9 +16,14 @@ passport.use(
 			if (user.error !== undefined) {
 				return done(null, false, req.flash('error', user.error.message));
 			} else {
-				const cartId = await generateShoppingCartId();
-				const loggedUser = { ...user, shopCartId: cartId.cart_id };
+				var publicObject = req.app.get('publicObject');
+				const loggedUser = {
+					...user,
+					shopCartId: publicObject.shopCartId,
+					subtotal: publicObject.subtotal
+				};
 				req.success = req.flash('success', 'Welcome ' + user.customer.name);
+				publicObject.status = 'inactive';
 				done(null, loggedUser);
 			}
 		}
@@ -38,9 +43,14 @@ passport.use(
 			if (newUser.error) {
 				return done(null, false, req.flash('error', newUser.error.message));
 			}
-			const cartId = await generateShoppingCartId();
-			const loggedUser = { ...newUser, shopCartId: cartId.cart_id };
+			var publicObject = req.app.get('publicObject');
+			const loggedUser = {
+				...newUser,
+				shopCartId: publicObject.shopCartId,
+				subtotal: publicObject.subtotal
+			};
 			req.success = req.flash('success', 'Welcome ' + newUser.customer.name);
+			publicObject.status = 'inactive';
 			done(null, loggedUser);
 		}
 	)

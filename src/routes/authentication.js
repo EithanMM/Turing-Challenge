@@ -8,111 +8,172 @@ const {
 	getProductById,
 	getProductSizes,
 	addProductToShoppingCart,
-	getListProductsFromShoppingCart,
-	saveProductForLater,
 	removeSingleProductFromCart,
-	wipeOutCart
+	wipeOutCart,
+	getProductsFromShoppingCart
 } = require('../../utils/e-comerceAPI');
+
 const { isLoged } = require('../lib/sessionKeeper');
 const router = express.Router();
+
+router.get('/signin', async (req, res) => {
+	var publicObject = req.app.get('publicObject');
+	let cartLenght = 0;
+
+	const productsInCart = await getProductsFromShoppingCart(publicObject.shopCartId);
+
+	productsInCart.forEach((element) => {
+		cartLenght += element.quantity;
+	});
+
+	res.render('login/signin', {
+		success: req.flash('success'),
+		error: req.flash('error'),
+		itemsAdded: cartLenght,
+		money: publicObject.subtotal
+	});
+});
 
 router.post('/signin', (req, res, next) => {
 	passport.authenticate('local.signin', {
 		//proceso de autenticacion
-		successRedirect: '/index/1',
+		successRedirect: '/select/1',
 		failureRedirect: '/signin',
 		failureFlash: true
 	})(req, res, next);
 });
 
+router.get('/signup', async (req, res) => {
+	var publicObject = req.app.get('publicObject');
+	let cartLenght = 0;
+
+	/*This means that the customer is using the public account. */
+	if (publicObject.status === 'active') {
+		const productsInCart = await getProductsFromShoppingCart(publicObject.shopCartId);
+
+		productsInCart.forEach((element) => {
+			cartLenght += element.quantity;
+		});
+
+		res.render('login/signup', {
+			success: req.flash('success'),
+			error: req.flash('error'),
+			itemsAdded: cartLenght,
+			money: publicObject.money
+		});
+	}
+});
+
 router.post(
 	'/signup',
 	passport.authenticate('local.signup', {
-		successRedirect: '/index/1',
+		successRedirect: '/select/1',
 		failureRedirect: '/signup',
 		failureFlash: true
 	})
 );
 
-router.get('/signin', (req, res) => {
-	res.render('login/signin', { success: req.flash('success'), error: req.flash('error') });
-});
+router.get('/signout', isLoged, async (req, res) => {
+	var publicObject = req.app.get('publicObject');
+	const status = await wipeOutCart(req.user.shopCartId);
 
-router.get('/signup', (req, res) => {
-	res.render('login/signup', { success: req.flash('success'), error: req.flash('error') });
-});
-
-router.get('/index/:id', isLoged, async (req, res) => {
-	const products = await getAllProdcuts(req.params.id);
-	var paginator = new pagination.SearchPaginator({
-		current: req.params.id,
-		rowsPerPage: 20,
-		totalResult: products.count
-	});
-	var range = paginator.getPaginationData().range;
-
-	res.render('index', {
-		user: req.user.customer,
-		result: products.rows,
-		range,
-		success: req.flash('success')
-	});
-});
-
-router.get('/index/cart/:id', isLoged, async (req, res) => {
-	const product = await getProductById(req.params.id);
-	if (!product) {
-		res.redirect('/index/1', { error: req.flash('error', product.error.message) });
+	if (status.message === 'success') {
+		req.logOut();
+		publicObject.status = 'active';
+		publicObject.subTotal = '0.00';
+		res.redirect('/signin');
 	}
-	//console.log(product);
-	const sizes = await getProductSizes(req.params.id);
-	res.render('purchase/product', { user: req.user.customer, product, sizes });
 });
 
-router.post('/index/cart/purchase', isLoged, async (req, res) => {
-	const order = req.body;
-	const productAdded = await addProductToShoppingCart(req.user.shopCartId, order.Id, order.sizeSend);
+router.get('/index/cart/:id', async (req, res) => {
+	var publicObject = req.app.get('publicObject');
+	let cartLenght = 0;
 
-	// //return an array of objects - each object is a product asociated to the cart.
-	const saveProduct = await saveProductForLater(productAdded[0].item_id);
-	//this variable will store the subTotal of all the products.
-	let subTotal = 0;
+	const product = await getProductById(req.params.id);
 
-	const productsInCart = await getListProductsFromShoppingCart(req.user.shopCartId);
+	if (!product) res.redirect('/index/1', { error: req.flash('error', product.error.message) });
+	const sizes = await getProductSizes(req.params.id);
 
-	productsInCart.forEach((element) => {
-		subTotal += parseFloat(element.price);
-	});
+	if (req.user === undefined) {
+		const productsInCart = await getProductsFromShoppingCart(publicObject.shopCartId);
 
-	subTotal = Math.floor(subTotal * 100) / 100;
+		productsInCart.forEach((element) => {
+			cartLenght += element.quantity;
+		});
 
-	if (saveProduct.message === 'success') {
-		res.render('purchase/payment', {
-			user: req.user.customer,
-			product: productsInCart,
-			publicKey: process.env.STRIPE_PUBLI_KEY,
-			subTotal,
-			//  I removed the . from the subTotal, so stripe can recognize it.
-			subTotalModified: subTotal.toString().replace('.', '')
+		res.render('purchase/product', {
+			product,
+			sizes,
+			money: publicObject.subtotal,
+			itemsAdded: cartLenght,
+			discount: product.discounted_price
 		});
 	} else {
-		res.render('purchase/product', {
-			user: req.user.customer,
-			product: await getProductById(productAdded[0].product_id),
-			sizes: await getProductSizes(productAdded[0].product_id)
+		const productsInCart = await getProductsFromShoppingCart(req.user.shopCartId);
+
+		productsInCart.forEach((element) => {
+			cartLenght += element.quantity;
 		});
+
+		res.render('purchase/product', {
+			user: req.user,
+			product,
+			sizes,
+			money: req.user.subtotal,
+			itemsAdded: cartLenght,
+			discount: product.discounted_price
+		});
+	}
+});
+
+router.post('/index/cart/add', async (req, res) => {
+	var publicObject = req.app.get('publicObject');
+	const order = req.body;
+	let totalAmountMoney = 0;
+
+	if (publicObject.status === 'active') {
+		for (let i = 0; i < parseInt(order.Quantity); i++) {
+			await addProductToShoppingCart(publicObject.shopCartId, order.Id, order.sizeSend);
+		}
+		const productsInCart = await getProductsFromShoppingCart(publicObject.shopCartId);
+
+		productsInCart.forEach((element) => {
+			totalAmountMoney += parseFloat(element.subtotal);
+		});
+
+		publicObject.subtotal = totalAmountMoney.toFixed(2);
+
+		res.redirect('/select/1');
+	}
+
+	if (publicObject.status === 'inactive') {
+		for (let i = 0; i < parseInt(order.Quantity); i++) {
+			await addProductToShoppingCart(req.user.shopCartId, order.Id, order.sizeSend);
+		}
+		const productsInCart = await getProductsFromShoppingCart(req.user.shopCartId);
+
+		productsInCart.forEach((element) => {
+			totalAmountMoney += parseFloat(element.subtotal);
+		});
+
+		req.user.subtotal = totalAmountMoney.toFixed(2);
+
+		res.redirect('/select/1');
 	}
 });
 
 router.post('/charge', isLoged, async (req, res) => {
-	const productsInCart = await getListProductsFromShoppingCart(req.user.shopCartId);
-	let subTotal = 0;
+	var publicObject = req.app.get('publicObject');
+	let cartLenght = 0;
+
+	const productsInCart = await getProductsFromShoppingCart(req.user.shopCartId);
 
 	productsInCart.forEach((element) => {
-		subTotal += parseFloat(element.price);
+		cartLenght += element.quantity;
 	});
 
-	subTotal = Math.floor(subTotal * 100) / 100;
+	// subTotal = Math.floor(subTotal * 100) / 100;
+	//parseInt(req.user.subtotal)
 
 	await stripe.customers
 		.create({
@@ -121,47 +182,97 @@ router.post('/charge', isLoged, async (req, res) => {
 		})
 		.then((customer) =>
 			stripe.charges.create({
-				amount: parseInt(req.body.subTotal),
+				amount: parseInt(req.user.subtotal.replace('.', '')),
 				description: req.body.description,
 				currency: 'usd',
 				customer: customer.id
 			})
 		)
 		.then((charge) => {
-			generateEmail(req.body.stripeEmail, productsInCart, subTotal);
-			res.render('purchase/successpayment', { user: req.user.customer });
+			generateEmail(req.body.stripeEmail, productsInCart, req.user.subtotal);
+			res.render('purchase/successpayment', {
+				user: req.user.customer,
+				money: req.user.subtotal,
+				itemsAdded: cartLenght
+			});
 		});
 
 	await wipeOutCart(req.user.shopCartId);
+	publicObject.subtotal = '0.00';
 });
 
-router.get('/signout', isLoged, (req, res) => {
-	req.logOut();
-	res.redirect('/signin');
+router.get('/shopCart', async (req, res) => {
+	var publicObject = req.app.get('publicObject');
+	let productsInCart;
+	let cartLenght = 0;
+	let totalAmountMoney = 0;
+
+	if (publicObject.status === 'active') {
+		productsInCart = await getProductsFromShoppingCart(publicObject.shopCartId);
+
+		productsInCart.forEach((element) => {
+			cartLenght += element.quantity;
+		});
+	}
+
+	if (publicObject.status === 'inactive') {
+		productsInCart = await getProductsFromShoppingCart(req.user.shopCartId);
+
+		productsInCart.forEach((element) => {
+			cartLenght += element.quantity;
+		});
+	}
+
+	if (req.user === undefined) {
+		res.render('purchase/payment', {
+			product: productsInCart,
+			publicKey: process.env.STRIPE_PUBLI_KEY,
+			money: publicObject.subtotal,
+			subTotal: publicObject.subtotal,
+			itemsAdded: cartLenght,
+			subTotalModified: publicObject.subtotal.toString().replace('.', '')
+		});
+	} else {
+		res.render('purchase/payment', {
+			user: req.user,
+			product: productsInCart,
+			publicKey: process.env.STRIPE_PUBLI_KEY,
+			money: req.user.subtotal,
+			subTotal: req.user.subtotal,
+			itemsAdded: cartLenght,
+			subTotalModified: req.user.subtotal.toString().replace('.', '')
+		});
+	}
 });
 
-router.get('/shopCart', isLoged, async (req, res) => {
-	let subTotal = 0;
-	const productsInCart = await getListProductsFromShoppingCart(req.user.shopCartId);
-
-	productsInCart.forEach((element) => {
-		subTotal += parseFloat(element.price);
-	});
-
-	subTotal = Math.floor(subTotal * 100) / 100;
-
-	res.render('purchase/payment', {
-		user: req.user.customer,
-		product: productsInCart,
-		publicKey: process.env.STRIPE_PUBLI_KEY,
-		subTotal,
-		subTotalModified: subTotal.toString().replace('.', '')
-	});
-});
-
-router.get('/deleteProduct/:item_id', isLoged, async (req, res) => {
+router.get('/deleteProduct/:item_id', async (req, res) => {
 	if (req.params.item_id) {
+		var publicObject = req.app.get('publicObject');
+		let productsInCart;
+		let totalAmountMoney = 0;
+
 		const productRemoved = await removeSingleProductFromCart(req.params.item_id);
+
+		if (publicObject.status === 'active') {
+			productsInCart = await getProductsFromShoppingCart(publicObject.shopCartId);
+
+			productsInCart.forEach((element) => {
+				totalAmountMoney += parseFloat(element.subtotal);
+			});
+
+			publicObject.subtotal = totalAmountMoney.toFixed(2);
+		}
+
+		if (publicObject.status === 'inactive') {
+			productsInCart = await getProductsFromShoppingCart(req.user.shopCartId);
+
+			productsInCart.forEach((element) => {
+				totalAmountMoney += parseFloat(element.subtotal);
+			});
+
+			req.user.subtotal = totalAmountMoney.toFixed(2);
+		}
+
 		if (productRemoved.message === 'success') {
 			res.redirect('/shopcart');
 		} else {
