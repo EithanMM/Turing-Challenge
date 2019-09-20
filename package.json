@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "node src/index.js",
 		"dev": "env-cmd -f ./config/dev.env nodemon src/index.js -e js,hbs",
-		"test": ""
+		"test": "jest --watch"
 	},
 	"keywords": [],
 	"author": "",
@@ -25,6 +25,7 @@
 	},
 	"devDependencies": {
 		"env-cmd": "^9.0.3",
+		"jest": "^24.9.0",
 		"nodemon": "^1.19.1"
 	}
 }

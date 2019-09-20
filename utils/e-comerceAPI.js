@@ -221,7 +221,6 @@ const addUser = (name, email, password) => {
 			},
 			(error, httpresponse, body) => {
 				if (error) reject(error);
-				console.log(httpresponse);
 				resolve(body);
 			}
 		);
@@ -448,6 +447,14 @@ const getAllProductsThatMatchSearch = async (product_name, all_words = undefined
 	return result;
 };
 /********************************************************/
+
+// getAllDepartments()
+// 	.then((result) => {
+// 		console.log(result);
+// 	})
+// 	.catch((e) => {
+// 		console.log(e);
+// 	});
 
 // getAllProductsFromCategoryById(1, 3)
 // 	.then((result) => {
