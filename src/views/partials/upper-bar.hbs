@@ -1,56 +1,57 @@
-{{#if user}}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="navbar-header">
-        <img src="/images/tshirtshop.png" width="150p" height="40">
-    </div>
+<header>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto"></ul>
-        <form class="form-inline my-2 my-lg-0">
-            <label class="form-group"><i style="color:chartreuse;" class="fas fa-user"></i></label></label>
-            <h5><label class="form-group" style="margin-top: 5px;">${{money}}</label></h5>
-            <a onclick="showLoading()" class="nav-link" href="/shopCart"><img id="cartImg"
-                    src="/images/shopping-cart.png"><span class="badge badge-light">{{itemsAdded}}</span></a>
-            <li class="nav-item dropleft">
-                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false"><img src="/icons/cons-burger-black.png"></a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/signout">Logout<i class="fas fa-sign-out-alt fa-2"></i></a>
-                </div>
-            </li>
-        </form>
+    {{#if user}} {{!-- logged user--}}
+    <div class="row">
+        <nav>
+            <img src="/images/icons/logo.jpg" class="logo">
+            <div class="shopping-section">
+                <div>{{itemsAdded}}</div>
+                <a href="#"><img src="/images/icons/shopping-cart.svg" class="cart-logo"></a>
+            </div>
+            <ul class="actions-nav">
+                <li><a href="#">Sign in</a></li>
+                <li><a href="#">Sign up</a></li>
+                <li><a href="#">cart</a> &nbsp;<i
+                        class="ion-ios-cart-outline mini-cart-logo">&nbsp;&nbsp;{{itemsAdded}}</i></li>
+            </ul>
+        </nav>
     </div>
-</nav>
-{{else}}
-{{#if presentationState}} {{!-- This means that the user is in the presentation view.--}}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="navbar-header">
-        <img src="/images/tshirtshop.png" width="150p" height="40">
+    <div class="row">
+        <ul class="options-nav js--main-nav">
+            <li><a href="#">Departments</a></li>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">All products</a></li>
+        </ul>
     </div>
-</nav>
-{{else}}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="navbar-header">
-        <img src="/images/tshirtshop.png" width="150p" height="40">
+    {{else}}
+    {{#if presentationState}} {{!-- This means that the user is in the presentation view.--}}
+    <div class="row">
+        <img src="/images/icons/logo.jpg" class="logo">
     </div>
+    {{else}} {{!-- non logged user--}}
+    <img src="/images/icons/logo.jpg" class="logo">
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto"></ul>
-        <form class="form-inline my-2 my-lg-0">
-            <label class="form-group"><i style="color: red;" class="fas fa-user"></i></label>
-            <h5><label class="form-group" style="margin-top: 5px;">${{money}}</label></h5>
-            <a onclick="showLoading()" class="nav-link" href="/shopCart"><img id="cartImg"
-                    src="/images/shopping-cart.png"><span class="badge badge-light">{{itemsAdded}}</span></a>
-            <li class="nav-item dropleft">
-                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false"><img src="/icons/cons-burger-black.png"></a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/signin">Login <i class="fas fa-sign-in-alt fa-2"></i></a>
-                    <a class="dropdown-item" href="/signup">Register <i class="fas fa-user-plus fa-2"></i></a>
-                </div>
-            </li>
-        </form>
-    </div>
-</nav>
-{{/if}}
-{{/if}}
+        <div class="search-box">
+            <input type="text" class="search-text" placeholder="">
+            <a href="#" class="search-btn"><i class="ion-ios-search js-search-icon"></i></a>
+        </div>
+
+    <input class="menu-btn" type="checkbox" id="menu-btn" />
+    <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
+
+    <ul class="actions-nav">
+        <li><a href="#">{{itemsAdded}}</a></li>
+        <li class="svg-cart-logo"><a href="#"><img src="/images/icons/shopping-cart.svg" class="cart-logo js--animation-4"></a></li>
+        <li><a href="#">Sign in</a></li>
+        <li><a href="#">Sign up</a></li>
+        <li><a href="#">cart&nbsp;<i class="ion-ios-cart-outline mini-cart-logo">&nbsp;&nbsp;{{itemsAdded}}</i></a></li>
+    </ul>
+
+    <ul class="options-nav-centered">
+        <li><a href="#">Departments</a></li>
+        <li><a href="#">Categories</a></li>
+        <li><a href="#">All products</a></li>
+    </ul>
+    {{/if}}
+    {{/if}}
+</header>

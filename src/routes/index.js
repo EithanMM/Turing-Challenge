@@ -54,14 +54,50 @@ router.get('/select/:id', async (req, res) => {
 	var paginator = new pagination.SearchPaginator({
 		current: req.params.id,
 		rowsPerPage: products.rowsPerPage,
-		totalResult: products.count
+		totalResult: products.count,
+		pageLinks: 6
 	});
 
-	var range = pageIndexCreation(paginator.getPaginationData().pageCount);
+		var lastPage = paginator.getPaginationData().pageCount - 1;
+		var currentPage = paginator.getPaginationData().current;
+		var totalPageNumber = pageIndexCreation(lastPage); //[1,...,12]
+		var range; //array result to send
+		var previousPage;
+		var nextPage;
+
+		//check if we can move one page backwards
+		if((currentPage - 1)!= 0) {
+			previousPage = currentPage - 1;
+		} else { previousPage = currentPage; }
+
+		//check if we can move one page forward
+		if((currentPage + 1) <= lastPage) {
+			nextPage = currentPage + 1;
+		} else { nextPage = currentPage }
+
+		// if the length of the group is lower than the max pageCount number
+		if(currentPage + 2 < lastPage) {
+			if(currentPage === 1) {
+				range = totalPageNumber.slice(currentPage - 1, currentPage + 2);
+			} else {
+				range = totalPageNumber.slice(currentPage - 2, currentPage + 1);
+			}
+		}
+
+		//check if the sum of the last page with the current is withing the range of 3
+		if( (lastPage - currentPage) <= 2 ) {
+				//we obtain the page number before the current page number
+				range = totalPageNumber.slice(lastPage - 3, lastPage);
+			}
+
 	if (req.user === undefined) {
 		res.render('index', {
 			result: products.rows,
 			range,
+			previousPage,
+			currentPage,
+			nextPage,
+			previousPage: currentPage - 1,
 			quantities,
 			itemsAdded: cartLenght,
 			money: publicObject.subtotal
@@ -73,6 +109,9 @@ router.get('/select/:id', async (req, res) => {
 			success: req.flash('success'),
 			error: req.flash('error'),
 			range,
+			previousPage,
+			currentPage,
+			nextPage,
 			quantities,
 			itemsAdded: cartLenght,
 			money: req.user.subtotal

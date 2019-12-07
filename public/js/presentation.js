@@ -1,10 +1,10 @@
 function disableAll() {
-	document.getElementById('reloadGif').style.display = 'none';
+	$('.reloadGif').hide();
 }
 
 function hideButton() {
-	document.getElementById('btnGo').style.display = 'none';
-	document.getElementById('reloadGif').style.display = 'inline';
+	$('.btn').hide();
+	$('.reloadGif').show();
 }
 
 disableAll();

@@ -1,57 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+<section id="section-index" class="section-index js--section-index">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>E-commerce</title>
-</head>
+    <div class="pagination">
+        <a class="page-number js--page-number" href="/select/{{previousPage}}">Previous</a> &nbsp;
+        {{#evaluate range  currentPage}}
+        {{this.value}}
+        {{/evaluate}}
+        &nbsp; <a class="page-number js--page-number" href="/select/{{nextPage}}">Next</a>
+    </div>
 
-<body>
-    <div id="loadingDiv" class="loading"><img style="margin-top: 130px; margin-left: 600px;"
-            src="/images/Reload-circle.gif"></div>
-    <script>document.getElementById('loadingDiv').style.display = 'none';</script>
-
-    <div id="container" class="container">
-        <div class="row">
-            <div class="pagination">
-                {{#each range}}
-                <a onclick="showLoading()" href="/select/{{this}}">{{this}}</a>
-                {{/each}}
+    <div class="row span-4-of-4 products-display">
+        {{#each result}}
+        <div class="product-box js-animation-1">
+            <div>
+                <figure class="image-container">
+                    <img src="/images/products/{{thumbnail}}" alt="product">
+                </figure>
             </div>
-            <div class="row">
-                {{#each result}}
-                <div class="col-sm d-flex align-items-stretch">
-                    <div class="card" style="width: 250px;">
-                        <img class="card-img-top" src="/images/{{thumbnail}}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">{{name}}</h5>
-                        </div>
-                        <div class="card-footer">
-                            <div class="row">
-                                <h4>${{price}}</h4>
-                                <label id="displayLabel-{{@index}}"
-                                    style="	margin-left: 30px; margin-top: 5px; font-size: 15px;">
-                                    <font color="red">OUT OF STOCK</font>
-                                </label>
-                                <a class="btn btn-success" id="btnSeeProduct-{{@index}}"
-                                    href="/index/cart/{{product_id}}" style="margin-left: 40px;">See
-                                    product</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{/each}}
+            <div>
+                <h5>{{name}}&nbsp;&dash;&nbsp;&dollar;{{price}}</h5>
+            </div>
+            <div>
+                <a href="/index/cart/{{product_id}}" class="btn primary-btn">See product</a>
+                <a href="#section-index" class="btn secondary-btn">Out of stock</a>
             </div>
         </div>
-        <select id="selector">
-            {{#each quantities}}
-            <option hidden="true" value={{this}}>{{this}}</option>
-            {{/each}}
-        </select>
+        {{/each}}
     </div>
-    <script src="/js/index.js"></script>
-</body>
 
-</html>
+    <div class="lower-pagination">
+        <a class="page-number js--page-number" href="/select/{{previousPage}}">Previous</a> &nbsp;
+        {{#evaluate range  currentPage}}
+        {{this.value}}
+        {{/evaluate}}
+        &nbsp; <a class="page-number js--page-number" href="/select/{{nextPage}}">Next</a>
+    </div>
+
+    <select class="selector">
+        {{#each quantities}}
+        <option hidden="true" value={{this}}>{{this}}</option>
+        {{/each}}
+    </select>
+</section>

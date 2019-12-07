@@ -246,7 +246,26 @@ router.get('/search/:page_number', async (req, res) => {
 		totalResult: productsFromSearch.count
 	});
 
-	var range = pageIndexCreation(paginator.getPaginationData().pageCount, req.params.page_number);
+	// var range = pageIndexCreation(paginator.getPaginationData().pageCount, req.params.page_number);
+
+	// let lastPage = paginator.getPaginationData().pageCount;
+	// let currentPage = paginator.getPaginationData().current;
+	// let totalPageNumber = pageIndexCreation(lastPage);
+	// var range;
+
+	// // if the length of the group is lower than the max pageCount number
+	// if(currentPage + 5 < lastPage) {
+	// 	range = totalPageNumber.slice(currentPage - 1, currentPage + 5);
+	// } else {
+	// 	//if the length of the group is higher than the max pageCount number
+	// 	//obtain the element of the position when we substract 8 elements from the total lenght of the array 
+	// 	let lowerLimit = totalPageNumber[lastPage - 8];
+
+	// 	// here we obtain the numbers of the array, from the lower limit, to the max posible limit.
+	// 	range = totalPageNumber.slice(lowerLimit, totalPageNumber[lastPage - 2]);
+	// 	//here we decrease the last range in 1, to gain the real limit of the items obtained
+	// 	lastPage = lastPage - 1;
+	// }
 
 	if (req.user === undefined) {
 		if (productsFromSearch.count === 0) {
@@ -352,6 +371,27 @@ router.post('/search/:page_number', async (req, res) => {
 	});
 
 	var range = pageIndexCreation(paginator.getPaginationData().pageCount, req.params.page_number);
+
+		// var range = pageIndexCreation(paginator.getPaginationData().pageCount, req.params.page_number);
+
+	// let lastPage = paginator.getPaginationData().pageCount;
+	// let currentPage = paginator.getPaginationData().current;
+	// let totalPageNumber = pageIndexCreation(lastPage);
+	// var range;
+
+	// // if the length of the group is lower than the max pageCount number
+	// if(currentPage + 5 < lastPage) {
+	// 	range = totalPageNumber.slice(currentPage - 1, currentPage + 5);
+	// } else {
+	// 	//if the length of the group is higher than the max pageCount number
+	// 	//obtain the element of the position when we substract 8 elements from the total lenght of the array 
+	// 	let lowerLimit = totalPageNumber[lastPage - 8];
+
+	// 	// here we obtain the numbers of the array, from the lower limit, to the max posible limit.
+	// 	range = totalPageNumber.slice(lowerLimit, totalPageNumber[lastPage - 2]);
+	// 	//here we decrease the last range in 1, to gain the real limit of the items obtained
+	// 	lastPage = lastPage - 1;
+	// }
 
 	if (req.user === undefined) {
 		if (productsFromSearch.count === 0) {

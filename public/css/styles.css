@@ -1,248 +1,480 @@
-body {
-	color: #333333;
-	margin: 0 auto;
-	padding: 0 16px;
-
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
+/*--------------------------------------------
+-- GENERAL COMPONENTS
+----------------------------------------------*/
+*{
+	padding: 0;
+	margin: 0;
 }
 
-.loading {
-	margin: 0 auto;
-	padding: 0 2px;
 
-	display: flex;
-	flex-direction: column;
-}
-
-.zoom {
-	position: absolute;
-	left: 290px;
-	top: 220px;
-	height: 100px;
-	width: 100px;
-	opacity: 0.5;
-	animation: zoom 4s ease forwards;
-}
-
-@keyframes zoom {
-	0% {
-		opacity: 0;
-		transform: translatex(-10px);
-	}
-	50% {
-		opacity: 1;
-		transform: translatex(1000px) translatey(-300px) scale(0.1);
-	}
-	100% {
-		opacity: 0;
-		transform: scale(0.2);
-	}
-}
-
-.container {
-	animation: transition 1s;
-}
-
-@keyframes transition {
-	from {
-		opacity: 0;
-		transform: rotateX(-10deg);
-	}
-
-	to {
-		opacity: 1;
-		transform: rotateX(0);
-	}
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	text-rendering: optimizeLegibility;
+	font-size: 20px;
 }
 
 header {
-	margin-top: 16px;
-	margin-bottom: 48px;
+	background-color: #232323;
+	width: 100%;
+	overflow: hidden; /*complemento cuando se usan atributo 'clear'*/
+	z-index: 3;
 }
 
-footer {
-	background-color: #262626;
-	border-top: 1px solid #262626;
-	margin-top: 16px;
-	font-size: 24px;
-	padding: 16px 0;
+.logo {
+	width: 80px;
+	display: block;
+	float: left; /*-> acomoda el logo a la izquierda*/
 }
 
-footer a {
-	margin-left: 200px;
-	margin-right: 50px;
-	cursor: pointer;
-	text-decoration: none;
-	border-radius: 4px;
-	padding: 5px;
-	background: transparent;
-	position: relative;
-}
-
-.main-content {
-	flex-grow: 1;
-}
-
-/* .pagination {
+.cart-logo {
+	width: 21px;
 	display: inline-block;
-} */
-
-.pagination a {
-	color: white;
-	float: left;
-	padding: 8px 16px;
-	text-decoration: none;
-	background-color: cadetblue;
-	transition: background-color .3s;
-	border: 1px solid #ddd;
-	margin: 0 4px;
 }
 
-.pagination a.active {
-	color: white;
-}
 
-.pagination a:hover:not(.active) {
-	background-color: #ddd;
-	color: black;
-}
-
-.pagination {
-	padding: 5px 5px;
-	margin: auto;
-}
-
-.shoping {
-	margin-left: 370px;
-}
-
-.social-part .fa {
-	padding-right: 20px;
-}
-
-label {
-	padding-right: 30px;
-}
-
-.v-header {
-	margin: 0px 0px 1000px 0px;
-}
-
-#miniImg {
-	border: 1px solid #ddd;
-	padding: 1px;
-	margin-left: 15px;
-}
-
-#miniImg:hover {
-	box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
-}
-
-#miniImg2 {
-	border: 1px solid #ddd;
-	padding: 1px;
-	margin-left: 10px;
-}
-
-#miniImg2:hover {
-	box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
-}
-
-#userLabel {
-	margin-top: 5px;
-	margin-left: 430px;
-}
-
-#thedropdown {
-	width: 90px;
-	margin-left: 40px;
-}
-
-#sizeLabel {
-	margin-right: 30px;
-}
-
-#adquiredLabel {
-	margin-left: 130px;
-}
-
-#paymentBtn {
-	margin-left: 150px;
-}
-
-#menuBtn {
-	margin-top: 7px;
-	margin-left: 60px;
-}
-
-#quantity {
-	width: 50px;
-}
-
-li {
-	display: inline;
-}
-
-/*Tests*/
-.switch {
-	position: relative;
+.reloadGif {
 	display: inline-block;
-	margin-right: 10px;
-	width: 60px;
-	height: 34px;
+	margin-bottom: -16px;
+	margin-top: 16px;
+	width: 40px;
 }
 
-.switch input {
-	opacity: 0;
-	width: 0;
-	height: 0;
+/*this clears the floats after an element*/
+.clearfix {zoom: 1}
+.clearfix:after { 
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
 }
 
-.slider {
-	position: absolute;
+
+/*--------------------------------------------
+-- NAVIGATION PAGES
+----------------------------------------------*/
+
+/*----------MOBILE APPROACH------------------*/
+.actions-nav {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	overflow: hidden;
+	clear: both; /*forces to the menu to be below the icon image*/
+	max-height: 0;
+	transition: max-height .2s ease-out
+}
+
+.actions-nav li a:link,
+.actions-nav li a:visited{
+	display: block;
+	padding: 20px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	text-decoration: none;
+	font-size: 15px;
+	color: rgb(230, 223, 223);
+	border-bottom: 2px solid transparent;
+    transition: border-bottom .2s, background-color .2s;
+}
+
+.actions-nav .svg-cart-logo a:hover {
+	background-color: #232323;
+	border: transparent;
+}
+
+.actions-nav li a:hover,
+.actions-nav li a:active{
+	background-color: crimson;
+	border-bottom: 2px solid  rgb(230, 223, 223);
+	color: #ffffff;
+}
+
+header .menu-icon {
+	padding: 20px 20px;
+	float: right;
+	position: relative;
 	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #ccc;
-	-webkit-transition: .4s;
-	transition: .4s;
 }
 
-.slider:before {
-	position: absolute;
+header .menu-icon .nav-icon {
+	background: #ffffff;
+	display: block;
+	position: relative;
+	height: 2px;
+	width: 20px;
+	transition: background .2s ease-out;
+}
+
+/*sudo elements- building the hamburguer icon*/
+header .menu-icon .nav-icon:before {
+	background: #ffffff;
 	content: "";
-	height: 26px;
-	width: 26px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
+	display: block;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	transition: all .2s ease-out;
+	top: 5px;
 }
 
-input:checked + .slider {
-	background-color: #66ff66;
+header .menu-icon .nav-icon:after {
+	background: #ffffff;
+	content: "";
+	display: block;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	transition: all .2s ease-out;
+	top:-5px;
 }
 
-input:focus + .slider {
-	box-shadow: 0 0 1px #66ff66;
+header .menu-btn { display: none;}
+
+/*Display or retract the mennu options, affects the class before '~'*/
+header .menu-btn:checked ~ .actions-nav {
+	max-height: 240px;
 }
 
-input:checked + .slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
+/*Hides the middle bar mennu options, affects the class before '~'*/
+header .menu-btn:checked ~ .menu-icon .nav-icon {
+	background: transparent;
 }
 
-/* Rounded sliders */
-.slider.round {
-	border-radius: 34px;
+/*affects the nav-icon in its 'before state' if its a child of .menu-icon that is sibling of .menu-btn
+ in checked state*/
+header .menu-btn:checked ~ .menu-icon .nav-icon:before {
+	transform: rotate(-45deg);
+	top: 0;
 }
 
-.slider.round:before {
+/*affects the nav-icon in its 'after state' if its a child of .menu-icon that is sibling of .menu-btn
+ in checked state*/
+header .menu-btn:checked ~ .menu-icon .nav-icon:after {
+	transform: rotate(45deg);
+	top: 0;
+}
+/*----------MOBILE APPROACH------------------*/
+
+/*----------OPTIONS NAVIGATION-------------------*/
+header .options-nav-centered {
+	position: relative;
+	overflow: hidden;
+	clear: both; /*forces to the menu to be below the icon image*/
+	padding-left: 28%;
+	margin-bottom: 5px;
+}
+
+header .options-nav-centered li {
+	display: inline;
+	padding: 0px 10px;
+	list-style: none;
+}
+
+header .options-nav-centered li:first-child { padding-left: 5%; }
+
+header .options-nav-centered li a:link,
+header .options-nav-centered li a:visited {
+	display: inline-block;
+	color: #ffffff;
+	text-transform: uppercase;
+	list-style: none;
+	text-decoration: none;
+	border-bottom: 1px solid transparent;
+	letter-spacing: 1px;
+	padding: 13px 15px;
+	font-size: 14px;
+	transition: background-color .2s, border-bottom .2s;
+}
+
+header .options-nav-centered li a:hover,
+header .options-nav-centered li a:active {
+	background-color: crimson;
+	border-bottom: 2px solid  rgb(230, 223, 223);
+}
+/*----------OPTIONS NAVIGATION-------------------*/
+
+/*----------STICKY NAVIGATION-------------------*/
+.sticky {
+	position: fixed;
+	display: block;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #232323;
+    color: #ffffff;
+    z-index: 9999;
+}
+
+.sticky .logo { width: 50px; }
+
+/*----------STICKY NAVIGATION-------------------*/
+
+/*--------------------------------------------
+-- HEADERS
+----------------------------------------------*/
+
+h2{
+    font-size: 200%;
+    word-spacing: 2px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/*--------------------------------------------
+-- HEADINGS
+----------------------------------------------*/
+.hero-text-box {
+	background-image: linear-gradient(#00000086, #00000086) ,url(/images/background_images/girl-shopping.jpg);
+	width: 100%;
+	height: 100vh;
+	font-weight: 300;
+	position: relative;
+	background-position: center;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+.hero-box-text {
+	position: absolute;
+	color: #ffffff;
+	text-align: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); 
+}
+
+/*--------------------------------------------
+-- BUTTONS
+----------------------------------------------*/
+
+.btn {
+	display: inline-block;
+	text-decoration: none;
+	padding: 10px 30px;
+	border-radius: 200px;
+}
+
+.primary-btn:link,
+.primary-btn:visited{
+	color: #2d2320;
+	background-color: #98be66;
+	transition: background-color 0.2s, color 0.2s;
+}
+
+.primary-btn:hover,
+.primary-btn:active {
+	background-color: #a1cf65;
+	color: #ffffff;
+}
+
+
+.secondary-btn:link,
+.secondary-btn:visited {
+	background-color: #ffffff;
+	color: #d13e3e;
+	border: 1px solid #d13e3e;
+	transition: background-color 0.2s, color 0.2s;
+}
+
+.secondary-btn:hover,
+.secondary-btn:active {
+	background-color: #d13e3e;
+	color: #ffffff;
+}
+/*--------------------------------------------
+-- INDEX SECTION
+----------------------------------------------*/
+
+.products-display { text-align: center; padding: 15px 0px;}
+
+.section-index {
+	background-color: #c0bdbd;
+	padding: 0;
+	width: 100%;
+}
+
+.product-box {
+	background-color: #ffffff;
+	display: inline-block;
+	border-radius: 5px;
+	width: 20%;
+	margin: 8px;
+}
+
+.product-box div {
+	text-align: center;
+	border-bottom: 1px solid #e6e1e1;
+}
+
+.product-box div:last-child {
+	margin: 10px 0px;
+	border-bottom: solid transparent;
+}
+
+.image-container{ /*elemento padre*/
+	width: 50%;
+	margin: 3% 25%;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+    overflow: hidden; /*si la img es de mayor tamano que su contenedor, esto esconde el overflow de la img*/
+}
+
+.image-container img {
+    width: 100%; /*nos aseguramos que el width tanto del elemento sea igual que el width del elemento padre*/
+	height: auto;
+}
+
+.image-container img:hover {
+	transform: scale(1.03);
+}
+
+/*--------------------------------------------
+-- PAGINATION
+----------------------------------------------*/
+
+.pagination,
+.lower-pagination {
+	background-color: #232323;
+	display: block;
+	font-size: 15px;
+	padding-left: 32%;
+	padding-bottom: 15px;
+	padding-top:10px;
+}
+
+.page-number:link,
+.page-number:visited{
+	text-transform: uppercase;
+	text-decoration: none;
+	display: inline-block;
+	letter-spacing: 1px;
+	padding: 4px 20px;
+	color: #ffffff;
+	border-bottom: 2px solid transparent;
+	transition: border-bottom .2s, background-color .2s;
+}
+
+.page-number:hover,
+.page-number:active {
+	background-color: crimson;
+	border-bottom: 2px solid  rgb(230, 223, 223);
+}
+
+.pagination .page-number:first-child {margin-left: 20px;}
+
+.page-number:hover,
+.page-number:active { border-bottom: 2px solid  rgb(230, 223, 223); }
+
+.selected { background-color: crimson; }
+
+/*--------------------------------------------
+-- FOOTER
+----------------------------------------------*/
+
+.section-footer{
+	background-color: #232323;
+	width: 100%;
+	display: inline-block;
+	font-size: 70%;
+}
+
+.social-nav{padding-left: 38%; }
+
+.section-footer p {padding-left: 33%;}
+
+.section-footer p {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	color: #ffffff;
+}
+
+
+.social-nav li {
+	margin-right: 50px;
+	display: inline-block;
+}
+
+.social-nav li a:link,
+.social-nav li a:visited {
+	text-decoration: none;
+	color: #aca9a9;
+	font-size: 210%;
+}
+
+.ion-social-facebook,
+.ion-social-twitter,
+.ion-social-pinterest,
+.ion-social-instagram{
+    transition: color 0.2s;
+}
+
+.ion-social-facebook:hover{  color: #1877f2; }
+
+.ion-social-pinterest:hover { color: #bd081c; }
+
+.ion-social-twitter:hover {   color: #1da1f2;}
+
+.ion-social-instagram:hover { color: #c32aa3; } 
+
+/*--------------------------------------------
+-- ANIMATIONS
+----------------------------------------------*/
+.js-animation-1 { animation-duration: 5s;}
+
+.js-shade-1 { opacity: 1;}
+.js-shade-1.animated {opacity: 0;}
+
+/*--------------------------------------------
+-- SEARCH ICON
+----------------------------------------------*/
+.search-box {
+	position: absolute;
+	top: 4%;
+	transform: translate(-4%, -0%);
+	background: #232323;
+	border: 1px solid #ffffff;
+	height: 27px;
+	margin-left: 46.5%;
+	border-radius: 40px;
+	padding: 2px;
+}
+
+.search-box .search-text {
+	border: none;
+	background: none;
+	outline: none;
+	float: left;
+	padding: 0;
+	margin-top: 5px;
+	margin-left: 2px;
+	font-size: 16px;
+	color: #ffffff;
+	line-height: 20px;
+	width: 0px;
+	transition: 0.58s;
+}
+
+.search-box:hover > .search-text { width: 240px; }
+
+.search-box:hover > .search-btn {
+	color: #ffffff;
+	background-color: crimson;
+}
+
+.search-box .search-btn {
+	color: #ffffff;
+	float: right;
+	width: 25px;
+	height: 25px;
 	border-radius: 50%;
+	background-color: #232323;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	transition: color 0.58s, background-color 0.58s;
 }
+

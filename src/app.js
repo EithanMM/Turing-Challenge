@@ -11,13 +11,31 @@ require('./lib/passport');
 
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../vendors')));
+
+
 app.engine(
 	'.hbs',
 	handlebars({
 		defaultLayout: 'main',
 		layoutsDir: path.join(app.get('views'), 'layouts'),
 		partialsDir: path.join(app.get('views'), 'partials'),
-		extname: '.hbs'
+		extname: '.hbs',
+		helpers: {
+			evaluate: function(list, currentPage,options) {
+
+				let html = "";
+				//console.log(list);
+				for(let i = 0; i < list.length; i++) {
+					if(list[i] === currentPage) {
+						html+='<a class="page-number selected js--page-number" href="/select/'+list[i]+'">'+options.fn({value:list[i]})+'</a>';
+				   } else {
+					   html+='<a class="page-number js--page-number" href="/select/'+list[i]+'">'+options.fn({value:list[i]})+'</a>';
+				   }
+				}
+				return html;
+			}
+		}
 	})
 );
 
