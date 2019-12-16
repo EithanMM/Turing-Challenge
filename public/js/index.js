@@ -3,29 +3,24 @@ $(document).ready(function () {
 	/*Function to hide or show buttons in the index page.*/
 	function seeProducts() {
 		var size = $('.selector').children('option').length;
+		var options = $('.selector').children('option');
 
-		$('.selector option').each(function () {
+		 for(let i = 0; i< size; i++) {
+			if(options[i].value == 0) { $('#btn-see-product-'+i+'').hide(); } 
+			else { $('#btn-out-of-stock-'+i+'').hide(); }
+		 }
 
-			if ($(this).val() === '0') {
-				$('.primary-btn').hide();
-				$('.secondary-btn').show();
-			} else {
-				$('.primary-btn').show();
-				$('.secondary-btn').hide();
-			}
-
-			$('.selector').hide();
-		});
+		$('.selector').hide();
 
 		/* Animations */
 		$('.js-animation-1').addClass('animated fadeInRightBig');
 
 		$('.svg-cart-logo').hover(function () {
 			//handleIn
-			$('.js--animation-4').addClass('animated swing');
+			$('.js--animation-4').addClass('animated heartBeat');
 		}, function () {
 			//handleOut
-			$('.js--animation-4').removeClass('animated swing');
+			$('.js--animation-4').removeClass('animated heartBeat');
 		});
 
 	}

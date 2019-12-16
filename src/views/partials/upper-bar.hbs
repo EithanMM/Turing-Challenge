@@ -11,8 +11,8 @@
             <ul class="actions-nav">
                 <li><a href="#">Sign in</a></li>
                 <li><a href="#">Sign up</a></li>
-                <li><a href="#">cart</a> &nbsp;<i
-                        class="ion-ios-cart-outline mini-cart-logo">&nbsp;&nbsp;{{itemsAdded}}</i></li>
+                <li><a href="#">cart</a> &nbsp;
+                <i class="ion-ios-cart-outline mini-cart-logo">&nbsp;&nbsp;{{itemsAdded}}</i></li>
             </ul>
         </nav>
     </div>
@@ -40,11 +40,11 @@
     <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
 
     <ul class="actions-nav">
-        <li><a href="#">{{itemsAdded}}</a></li>
-        <li class="svg-cart-logo"><a href="#"><img src="/images/icons/shopping-cart.svg" class="cart-logo js--animation-4"></a></li>
+        <li class="svg-cart-logo"><a href="#"><img src="/images/icons/shopping-cart.svg" class="cart-logo js--animation-4"><span class="num">{{itemsAdded}}</span></a></li>
         <li><a href="#">Sign in</a></li>
         <li><a href="#">Sign up</a></li>
-        <li><a href="#">cart&nbsp;<i class="ion-ios-cart-outline mini-cart-logo">&nbsp;&nbsp;{{itemsAdded}}</i></a></li>
+        {{!-- <li><a href="#">cart&nbsp;<i class="ion-ios-cart-outline mini-cart-logo"></i></a><span class="num">{{itemsAdded}}</span></li> --}}
+        <li><a href="#">cart</a><span class="num">{{itemsAdded}}</span></li>
     </ul>
 
     <ul class="options-nav-centered">

@@ -20,8 +20,8 @@
                 <h5>{{name}}&nbsp;&dash;&nbsp;&dollar;{{price}}</h5>
             </div>
             <div>
-                <a href="/index/cart/{{product_id}}" class="btn primary-btn">See product</a>
-                <a href="#section-index" class="btn secondary-btn">Out of stock</a>
+                <a href="/index/cart/{{product_id}}" id="btn-see-product-{{@index}}" class="btn primary-btn">See product</a>
+                <a href="#section-index" id="btn-out-of-stock-{{@index}}" class="btn secondary-btn">Out of stock</a>
             </div>
         </div>
         {{/each}}
@@ -37,7 +37,7 @@
 
     <select class="selector">
         {{#each quantities}}
-        <option hidden="true" value={{this}}>{{this}}</option>
+        <option value={{this}}>{{this}}</option>
         {{/each}}
     </select>
 </section>

@@ -95,19 +95,24 @@ router.get('/index/cart/:id', async (req, res) => {
 	const sizes = await getProductSizes(req.params.id);
 
 	if (req.user === undefined) {
-		const productsInCart = await getProductsFromShoppingCart(publicObject.shopCartId);
 
-		productsInCart.forEach((element) => {
-			cartLenght += element.quantity;
-		});
+		try {
+			const productsInCart = await getProductsFromShoppingCart(publicObject.shopCartId);
 
-		res.render('purchase/product', {
-			product,
-			sizes,
-			money: publicObject.subtotal,
-			itemsAdded: cartLenght,
-			discount: product.discounted_price
-		});
+			productsInCart.forEach((element) => {
+				cartLenght += element.quantity;
+			});
+	
+			res.render('purchase/product', {
+				product,
+				sizes,
+				money: publicObject.subtotal,
+				itemsAdded: cartLenght,
+				discount: product.discounted_price
+			});
+		} catch (error) {
+			console.log(error);
+		}
 	} else {
 		const productsInCart = await getProductsFromShoppingCart(req.user.shopCartId);
 

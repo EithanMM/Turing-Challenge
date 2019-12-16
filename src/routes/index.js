@@ -50,7 +50,7 @@ router.get('/select/:id', async (req, res) => {
 
 	const products = await getAllProdcutsById(req.params.id);
 	const quantities = products.quantities;
-
+	
 	var paginator = new pagination.SearchPaginator({
 		current: req.params.id,
 		rowsPerPage: products.rowsPerPage,
